@@ -3,8 +3,6 @@ from cell import Cell
 import astar
 
 pygame.init()
-WIN = pygame.display.set_mode((693,693))
-pygame.display.set_caption("A* Search")
 clock = pygame.time.Clock()
 
 def make_grid(rows: int, width: int) -> list[list[Cell]]:
@@ -53,7 +51,7 @@ def get_clicked_pos(pos, rows, width):
 
     return row, col
 
-def main(win, rows, width):
+def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
     width = width - (width % rows)
     grid = make_grid(rows, width)
 
@@ -99,7 +97,8 @@ def main(win, rows, width):
                     astar.init(grid)
 
         if started and not done:
-            astar.astar()
+            for _ in range(steps_per_frame):
+                astar.astar()
             if astar.is_finished():
                 done = True
             elif astar.no_path():
@@ -116,15 +115,12 @@ def main(win, rows, width):
                 print(f"Path Length: {len(path) - 1}")
             path_count += 1
 
-        WIN.fill("gray", pygame.Rect(0, 0, width, width))
+        win.fill("gray", pygame.Rect(0, 0, width, width))
     
         draw(win, grid, rows, width)
     
         pygame.display.flip()
     
-        clock.tick(60)
+        clock.tick(fps)
 
     pygame.quit()
-
-if __name__ == "__main__":
-    main(WIN, 21, 700)

@@ -64,6 +64,10 @@ def astar() -> None:
         g_score[start] = 0
         heapq.heappush(open_set, (0, start)) # f-score, (row, col)
 
+    # exit function if no path exists
+    if count > 0 and not open_set:
+        return
+    
     rows, cols = len(grid), len(grid[0])
     
     neighbors = [(0,1), (1,0), (0,-1), (-1,0)]

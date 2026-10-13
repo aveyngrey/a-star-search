@@ -9,6 +9,18 @@ GOAL_COLOR = pygame.Color("yellow")
 WALL_COLOR = pygame.Color("black")
 PATH_COLOR = pygame.Color("blue")
 
+def init_colors(empty_color, open_color, closed_color, start_color,
+                goal_color, wall_color, path_color) -> None:
+    global EMPTY_COLOR, OPEN_COLOR, CLOSED_COLOR, START_COLOR, \
+           GOAL_COLOR, WALL_COLOR, PATH_COLOR
+    EMPTY_COLOR = empty_color
+    OPEN_COLOR = open_color
+    CLOSED_COLOR = closed_color
+    START_COLOR = start_color
+    GOAL_COLOR = goal_color
+    WALL_COLOR = wall_color
+    PATH_COLOR = path_color
+
 class Cell:
 
     def __init__(self, row: int, col: int, width: int, total_rows: int) -> None:
@@ -65,9 +77,3 @@ class Cell:
 
     def draw(self, win) -> None:
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
-
-    def update_neighbors(self, grid):
-        pass
-
-    def __lt__(self, other) -> bool:
-        return False
