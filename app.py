@@ -3,7 +3,7 @@ from cell import Cell
 import astar
 
 pygame.init()
-WIN = pygame.display.set_mode((700,700))
+WIN = pygame.display.set_mode((693,693))
 pygame.display.set_caption("A* Search")
 clock = pygame.time.Clock()
 
@@ -54,6 +54,7 @@ def get_clicked_pos(pos, rows, width):
     return row, col
 
 def main(win, rows, width):
+    width = width - (width % rows)
     grid = make_grid(rows, width)
 
     # keep track of start and goal cells
@@ -104,23 +105,24 @@ def main(win, rows, width):
             elif astar.no_path():
                 done = True
 
-        if done and (path_count < len(astar.get_path())):
-            path_pos = astar.get_path()[path_count]
+        path = astar.get_path()
+        if done and (path_count < len(path)):
+            path_pos = path[path_count]
             path_row, path_col = path_pos
             path_cell = grid[path_row][path_col]
             if path_cell != start and path_cell != goal:
                 path_cell.set_path()
+            if path_count == len(path) - 1:
+                print(f"Path Length: {len(path) - 1}")
             path_count += 1
 
-        WIN.fill("gray")
+        WIN.fill("gray", pygame.Rect(0, 0, width, width))
     
         draw(win, grid, rows, width)
     
         pygame.display.flip()
     
         clock.tick(60)
-
-        
 
     pygame.quit()
 
