@@ -1,6 +1,7 @@
 import pygame
 from cell import Cell
 import astar
+import maze_generator
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -64,6 +65,9 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
     done = False
 
     path_count = 0
+
+    generating_maze = False
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -90,13 +94,22 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
                     elif cell == goal:
                         goal = None
                     cell.reset()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and not started:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_SPACE]:
                     started = True
                     astar.init(grid)
+                elif keys[pygame.K_m]:
+                    started = True
+                    maze_generator.init(grid)
+                    generating_maze = True
 
-        if started and not done:
+        if generating_maze:
+            maze_generator.step()
+            generating_maze = maze_generator.is_active()
+            if generating_maze:
+                astar.init(grid)
+        elif started and not done:
             for _ in range(steps_per_frame):
                 astar.astar()
             if astar.is_finished():

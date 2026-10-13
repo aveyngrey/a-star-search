@@ -2,7 +2,6 @@ import heapq
 from cell import Cell
 
 # general globals
-
 finished = False
 path = []
 grid = None
@@ -72,7 +71,7 @@ def astar() -> None:
     
     rows, cols = len(grid), len(grid[0])
     
-    neighbors = [(0,1), (1,0), (0,-1), (-1,0)]
+    neighbors = ((0,1), (1,0), (0,-1), (-1,0))
 
     current_pos = heapq.heappop(open_set)[2]
     current_row, current_col = current_pos
