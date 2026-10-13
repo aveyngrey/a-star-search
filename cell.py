@@ -8,6 +8,7 @@ START_COLOR = pygame.Color("green")
 GOAL_COLOR = pygame.Color("yellow") 
 WALL_COLOR = pygame.Color("black")
 PATH_COLOR = pygame.Color("blue")
+MAZE_GENERATE_COLOR = pygame.Color("cyan")
 
 def init_colors(empty_color, open_color, closed_color, start_color,
                 goal_color, wall_color, path_color) -> None:
@@ -32,6 +33,9 @@ class Cell:
         self.neighbors = []
         self.width = width
         self.total_rows = total_rows
+
+    def set_maze_generate_highlight(self) -> None:
+        self.color = MAZE_GENERATE_COLOR
 
     def get_pos(self) -> tuple[int, int]:
         return self.row, self.col

@@ -14,7 +14,7 @@ path_color = pygame.Color("blue")
 
 display_width = 700
 rows = 21
-fps = 30
+fps = 60
 steps_per_frame = 1
 
 if __name__ == "__main__":

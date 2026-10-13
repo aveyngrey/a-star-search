@@ -30,7 +30,7 @@ def init(grid: list[list[Cell]]) -> None:
     grid[current_row][current_col].reset()
 
     neighbors = wall_neighbors(current_pos)
-    generator_path.append(start)
+    generator_path.append(grid[current_row][current_col])
     generator_active = True
     
 
@@ -43,7 +43,8 @@ def step() -> None:
         generator_path.append(next_cell)
         neighbors = wall_neighbors(next_cell.get_pos())
     elif generator_path:
-        pass
+        last_cell = generator_path.pop()
+        neighbors = wall_neighbors(last_cell.get_pos())
     else:
         generator_active = False
 

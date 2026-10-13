@@ -96,13 +96,15 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
                     cell.reset()
             if event.type == pygame.KEYDOWN and not started:
                 keys = pygame.key.get_pressed()
-                if keys[pygame.K_SPACE]:
+                if keys[pygame.K_SPACE] and start and goal:
                     started = True
                     astar.init(grid)
                 elif keys[pygame.K_m]:
                     started = True
                     maze_generator.init(grid)
                     generating_maze = True
+                    start = grid[0][0]
+                    goal = grid[rows - 1][rows - 1]
 
         if generating_maze:
             maze_generator.step()
