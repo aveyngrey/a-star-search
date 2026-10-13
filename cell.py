@@ -8,12 +8,12 @@ START_COLOR = pygame.Color("green")
 GOAL_COLOR = pygame.Color("yellow") 
 WALL_COLOR = pygame.Color("black")
 PATH_COLOR = pygame.Color("blue")
-MAZE_GENERATE_COLOR = pygame.Color("cyan")
+MAZE_GENERATE_COLOR = pygame.Color("red")
 
 def init_colors(empty_color, open_color, closed_color, start_color,
-                goal_color, wall_color, path_color) -> None:
+                goal_color, wall_color, path_color, maze_generate_color) -> None:
     global EMPTY_COLOR, OPEN_COLOR, CLOSED_COLOR, START_COLOR, \
-           GOAL_COLOR, WALL_COLOR, PATH_COLOR
+           GOAL_COLOR, WALL_COLOR, PATH_COLOR, MAZE_GENERATE_COLOR
     EMPTY_COLOR = empty_color
     OPEN_COLOR = open_color
     CLOSED_COLOR = closed_color
@@ -21,6 +21,7 @@ def init_colors(empty_color, open_color, closed_color, start_color,
     GOAL_COLOR = goal_color
     WALL_COLOR = wall_color
     PATH_COLOR = path_color
+    MAZE_GENERATE_COLOR = maze_generate_color
 
 class Cell:
 

@@ -11,6 +11,7 @@ start_color = pygame.Color("green")
 goal_color = pygame.Color("yellow")
 wall_color = pygame.Color("black")
 path_color = pygame.Color("blue")
+maze_generate_color = pygame.Color("red")
 
 display_width = 700
 rows = 21
@@ -19,7 +20,7 @@ steps_per_frame = 1
 
 if __name__ == "__main__":
     cell.init_colors(empty_color, open_color, closed_color, start_color,
-                     goal_color, wall_color, path_color)
+                     goal_color, wall_color, path_color, maze_generate_color)
 
     # makes it so (display_width % rows = 0) to ensure a perfect fit
     display_width = display_width - (display_width % rows)

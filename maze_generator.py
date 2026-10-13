@@ -6,10 +6,11 @@ grid = []
 generator_active = False
 generator_path = []
 neighbors = []
+current_cell: Cell | None = None
 
 def init(grid: list[list[Cell]]) -> None:
     globals()["grid"] = grid
-    global neighbors, generator_active, generator_path
+    global neighbors, generator_active, generator_path, current_cell
 
     rows = len(grid)
     start = (0,0)
@@ -27,7 +28,10 @@ def init(grid: list[list[Cell]]) -> None:
     while current_pos == start or current_pos == goal:
         current_pos = (random.randrange(0, rows), random.randrange(0, rows))
     current_row, current_col = current_pos
-    grid[current_row][current_col].reset()
+    current_cell = grid[current_row][current_col]
+    current_cell.reset()
+    current_cell.set_maze_generate_highlight()
+
 
     neighbors = wall_neighbors(current_pos)
     generator_path.append(grid[current_row][current_col])
@@ -35,16 +39,25 @@ def init(grid: list[list[Cell]]) -> None:
     
 
 def step() -> None:
-    global neighbors, generator_path, generator_active
+    global neighbors, generator_path, generator_active, current_cell
+
+    if current_cell is None:
+        raise RuntimeError("Generator has no current cell")
+
+    current_cell.reset()
     if neighbors:
         rand_index = random.randrange(0, len(neighbors))
         next_cell = neighbors[rand_index]
         next_cell.reset()
+        next_cell.set_maze_generate_highlight()
         generator_path.append(next_cell)
         neighbors = wall_neighbors(next_cell.get_pos())
+        current_cell = next_cell
     elif generator_path:
         last_cell = generator_path.pop()
         neighbors = wall_neighbors(last_cell.get_pos())
+        last_cell.set_maze_generate_highlight()
+        current_cell = last_cell
     else:
         generator_active = False
 
