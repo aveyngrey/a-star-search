@@ -101,15 +101,18 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
                     astar.init(grid)
                 elif keys[pygame.K_m]:
                     started = True
-                    maze_generator.init(grid)
+                    if start is None:
+                        start = grid[0][0]
+                    if goal is None:
+                        goal = grid[rows - 1][rows - 1]
+                    maze_generator.init(grid, start.get_pos(), goal.get_pos())
                     generating_maze = True
-                    start = grid[0][0]
-                    goal = grid[rows - 1][rows - 1]
 
         if generating_maze:
-            maze_generator.step()
+            for _ in range(steps_per_frame):
+                maze_generator.step()
             generating_maze = maze_generator.is_active()
-            if generating_maze:
+            if not generating_maze:
                 astar.init(grid)
         elif started and not done:
             for _ in range(steps_per_frame):
