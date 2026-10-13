@@ -7,7 +7,7 @@ finished = False
 path = []
 grid = None
 cell_grid = None
-start = None
+start = (0, 0)
 goal = None
 
 # globals to save values after each astar() call
@@ -62,7 +62,9 @@ def astar() -> None:
 
     if count == 0:
         g_score[start] = 0
-        heapq.heappush(open_set, (0, start)) # f-score, (row, col)
+
+        # f-score, h-score, (row, col)
+        heapq.heappush(open_set, (0, distance(start, goal), start))
 
     # exit function if no path exists
     if count > 0 and not open_set:
@@ -72,7 +74,7 @@ def astar() -> None:
     
     neighbors = [(0,1), (1,0), (0,-1), (-1,0)]
 
-    current_f, current_pos = heapq.heappop(open_set)
+    current_pos = heapq.heappop(open_set)[2]
     current_row, current_col = current_pos
     current_cell = cell_grid[current_row][current_col]
     if current_pos != start and current_pos != goal:
@@ -85,8 +87,9 @@ def astar() -> None:
         while current_path_pos in came_from:
             path.append(current_path_pos)
             current_path_pos = came_from[current_path_pos]
-        path.reverse
+        path.reverse()
         finished = True
+        return
 
     for dr, dc in neighbors:
         neighbor_pos = (current_pos[0] + dr, current_pos[1] + dc)
@@ -102,8 +105,9 @@ def astar() -> None:
             or tentative_g < g_score[neighbor_pos]):
                 came_from[neighbor_pos] = current_pos
                 g_score[neighbor_pos] = tentative_g
-                f_score = tentative_g + distance(neighbor_pos, goal)
-                heapq.heappush(open_set, (f_score, neighbor_pos))
+                h_score = distance(neighbor_pos, goal)
+                f_score = tentative_g + h_score
+                heapq.heappush(open_set, (f_score, h_score, neighbor_pos))
                 neighbor_cell = cell_grid[neighbor_row][neighbor_col]
                 if neighbor_pos != start and neighbor_pos != goal:
                     neighbor_cell.set_open()
