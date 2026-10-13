@@ -68,46 +68,46 @@ def main(win, rows, width):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        if not started:
-            if pygame.mouse.get_pressed()[0]: # left click
-                pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(pos, rows, width)
-                cell = grid[row][col]
-                if not start and cell != goal:
-                    start = cell
-                    cell.set_start()
-                elif not goal and cell != start:
-                    goal = cell
-                    cell.set_goal()
-                elif cell != start and cell != goal:
-                    cell.set_wall()
-            elif pygame.mouse.get_pressed()[2]: # right click
-                pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(pos, rows, width)
-                cell = grid[row][col]
-                if cell == start:
-                    start = None
-                elif cell == goal:
-                    goal = None
-                cell.reset()
-
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_SPACE]:
-                started = True
-                final_grid = tuple(tuple(row) for row in grid)
+            if not started:
+                if pygame.mouse.get_pressed()[0]: # left click
+                    pos = pygame.mouse.get_pos()
+                    row, col = get_clicked_pos(pos, rows, width)
+                    cell = grid[row][col]
+                    if not start and cell != goal:
+                        start = cell
+                        cell.set_start()
+                    elif not goal and cell != start:
+                        goal = cell
+                        cell.set_goal()
+                    elif cell != start and cell != goal:
+                        cell.set_wall()
+                elif pygame.mouse.get_pressed()[2]: # right click
+                    pos = pygame.mouse.get_pos()
+                    row, col = get_clicked_pos(pos, rows, width)
+                    cell = grid[row][col]
+                    if cell == start:
+                        start = None
+                    elif cell == goal:
+                        goal = None
+                    cell.reset()
+            if event.type == pygame.KEYDOWN:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_SPACE]:
+                    started = True
+                    final_grid = tuple(tuple(row) for row in grid)
 
         if started:
             pass
 
-
         WIN.fill("gray")
-
+    
         draw(win, grid, rows, width)
-
+    
         pygame.display.flip()
-
+    
         clock.tick(60)
+
+        
 
     pygame.quit()
 
