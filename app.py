@@ -1,5 +1,6 @@
 import pygame
 from cell import Cell
+import astar
 
 pygame.init()
 WIN = pygame.display.set_mode((700,700))
@@ -61,9 +62,9 @@ def main(win, rows, width):
 
     running = True
     started = False
+    done = False
 
-    final_grid = None # grid once player submits it
-
+    path_count = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -94,10 +95,22 @@ def main(win, rows, width):
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_SPACE]:
                     started = True
-                    final_grid = tuple(tuple(row) for row in grid)
+                    astar.init(grid)
 
-        if started:
-            pass
+        if started and not done:
+            astar.astar()
+            if astar.is_finished():
+                done = True
+            elif astar.no_path():
+                done = True
+
+        if done and (path_count < len(astar.get_path())):
+            path_pos = astar.get_path()[path_count]
+            path_row, path_col = path_pos
+            path_cell = grid[path_row][path_col]
+            if path_cell != start and path_cell != goal:
+                path_cell.set_path()
+            path_count += 1
 
         WIN.fill("gray")
     

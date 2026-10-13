@@ -36,6 +36,12 @@ class Cell:
     def is_goal(self) -> bool:
         return self.color == GOAL_COLOR
 
+    def is_wall(self) -> bool:
+        return self.color == WALL_COLOR
+
+    def is_empty(self) -> bool:
+        return self.color == EMPTY_COLOR
+
     def reset(self) -> None:
         self.color = EMPTY_COLOR
 
@@ -53,6 +59,9 @@ class Cell:
 
     def set_goal(self) -> None:
         self.color = GOAL_COLOR
+
+    def set_path(self) -> None:
+        self.color = PATH_COLOR
 
     def draw(self, win) -> None:
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))

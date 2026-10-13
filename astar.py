@@ -1,35 +1,88 @@
 import heapq
+from cell import Cell
+
+# general globals
 
 finished = False
+path = []
+grid = None
+cell_grid = None
+start = None
+goal = None
+
+# globals to save values after each astar() call
+open_set = []
+came_from = {}
+g_score = {}
+count = 0
+
+def init(init_grid) -> None:
+    global grid, start, goal, cell_grid
+    cell_grid = init_grid
+    temp_grid = []
+    for row in range(len(init_grid)):
+        temp_grid.append([])
+        for col in range(len(init_grid[0])):
+            cell = init_grid[row][col]
+            if not cell.is_wall():
+                temp_grid[row].append(0)
+                if cell.is_start():
+                    start = cell.get_pos()
+                elif cell.is_goal():
+                    goal = cell.get_pos()
+            elif not cell.is_start() and not cell.is_goal():
+                temp_grid[row].append(1)
+    grid = tuple(tuple(row) for row in temp_grid)
 
 def distance(point1: tuple[int, int], 
              point2: tuple[int, int]) -> int:
     return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
 
-def astar(grid: tuple[tuple[int, ...], ...], 
-          start: tuple[int, int], 
-          goal: tuple[int, int]) -> list[tuple[int, int]]:
+def astar() -> None:
+    global grid, start, goal, finished, cell_grid
+    global open_set, g_score, came_from, count
+
+    if grid is None:
+        raise RuntimeError("grid has not been initialized")
+    if not grid:
+        raise ValueError("grid must not be empty")
+
+    if goal is None:
+        raise RuntimeError("goal has not been initialized")
+    if not goal:
+        raise ValueError("goal must not be empty")
+
+    if cell_grid is None:
+        raise RuntimeError("cell_grid has not been initialized")
+    if not cell_grid:
+        raise ValueError("cell_grid must not be empty")
+
+    if g_score is None:
+        raise RuntimeError("g_score has not been initialized")
+
+    if count == 0:
+        g_score[start] = 0
+        heapq.heappush(open_set, (0, start)) # f-score, (row, col)
+
     rows, cols = len(grid), len(grid[0])
     
-    open_set = []
-    heapq.heappush(open_set, (0, start)) # f-score, (row, col)
-
-    came_from = {}
-    g_score = {start : 0}
-
     neighbors = [(0,1), (1,0), (0,-1), (-1,0)]
 
     current_f, current_pos = heapq.heappop(open_set)
+    current_row, current_col = current_pos
+    current_cell = cell_grid[current_row][current_col]
+    if current_pos != start and current_pos != goal:
+        current_cell.set_closed()
 
     if current_pos == goal:
+        global path
         path = []
         current_path_pos = goal
         while current_path_pos in came_from:
             path.append(current_path_pos)
             current_path_pos = came_from[current_path_pos]
-        path.append(start)
         path.reverse
-        return path
+        finished = True
 
     for dr, dc in neighbors:
         neighbor_pos = (current_pos[0] + dr, current_pos[1] + dc)
@@ -47,43 +100,56 @@ def astar(grid: tuple[tuple[int, ...], ...],
                 g_score[neighbor_pos] = tentative_g
                 f_score = tentative_g + distance(neighbor_pos, goal)
                 heapq.heappush(open_set, (f_score, neighbor_pos))
-    return []
+                neighbor_cell = cell_grid[neighbor_row][neighbor_col]
+                if neighbor_pos != start and neighbor_pos != goal:
+                    neighbor_cell.set_open()
 
-def print_grid(grid: tuple[tuple[int, ...], ...], 
-               path: list[tuple[int, int]], 
-               start: tuple[int, int], 
-               goal: tuple[int, int]) -> None:
-    path_set = set(path) if path else set()
+    count += 1
+
+def is_finished() -> bool:
+    return finished
+
+def no_path() -> bool:
+    return not open_set
+
+def get_path() -> list[tuple[int, int]]:
+    return path
+
+# def print_grid(grid: tuple[tuple[int, ...], ...], 
+#                path: list[tuple[int, int]], 
+#                start: tuple[int, int], 
+#                goal: tuple[int, int]) -> None:
+#     path_set = set(path) if path else set()
     
-    for r in range(len(grid)):
-        line = ""
-        for c in range(len(grid[r])):
-            coord = (r, c)
-            if coord == start:
-                line += " S "
-            elif coord == goal:
-                line += " G "
-            elif coord in path_set:
-                line += " * "
-            elif grid[r][c] == 1:
-                line += " ■ "
-            else:
-                line += " . "
-        print(line)
+#     for r in range(len(grid)):
+#         line = ""
+#         for c in range(len(grid[r])):
+#             coord = (r, c)
+#             if coord == start:
+#                 line += " S "
+#             elif coord == goal:
+#                 line += " G "
+#             elif coord in path_set:
+#                 line += " * "
+#             elif grid[r][c] == 1:
+#                 line += " ■ "
+#             else:
+#                 line += " . "
+#         print(line)
 
-if __name__ == "__main__":
-    grid = (
-        (0, 0, 0, 1, 0, 0, 0, 0),
-        (0, 1, 0, 1, 0, 1, 1, 0),
-        (0, 1, 0, 1, 0, 1, 1, 0),
-        (0, 1, 0, 1, 0, 0, 0, 0),
-        (0, 1, 0, 1, 0, 1, 1, 0),
-        (0, 1, 0, 0, 0, 1, 1, 0),
-        (0, 1, 1, 1, 1, 1, 1, 0),
-        (0, 0, 0, 0, 0, 0, 0, 0),
-    )
-    start = (0,0)
-    goal = (7,7)
-    path = astar(grid, start, goal)
-    print_grid(grid, path, start, goal)
-    print(f"Path length: {len(path)}") if path else print("No path found :(")
+# if __name__ == "__main__":
+#     grid = (
+#         (0, 0, 0, 1, 0, 0, 0, 0),
+#         (0, 1, 0, 1, 0, 1, 1, 0),
+#         (0, 1, 0, 1, 0, 1, 1, 0),
+#         (0, 1, 0, 1, 0, 0, 0, 0),
+#         (0, 1, 0, 1, 0, 1, 1, 0),
+#         (0, 1, 0, 0, 0, 1, 1, 0),
+#         (0, 1, 1, 1, 1, 1, 1, 0),
+#         (0, 0, 0, 0, 0, 0, 0, 0),
+#     )
+#     start = (0,0)
+#     goal = (7,7)
+#     path = astar(grid, start, goal)
+#     print_grid(grid, path, start, goal)
+#     print(f"Path length: {len(path)}") if path else print("No path found :(")
