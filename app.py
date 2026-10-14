@@ -125,15 +125,18 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
                 done = True
 
         path = astar.get_path()
-        if done and (path_count < len(path)):
-            path_pos = path[path_count]
-            path_row, path_col = path_pos
-            path_cell = grid[path_row][path_col]
-            if path_cell != start and path_cell != goal:
-                path_cell.set_path()
-            if path_count == len(path) - 1:
-                print(f"Path Length: {len(path) - 1}")
-            path_count += 1
+        if done:
+            for _ in range(steps_per_frame):
+                if not (path_count < len(path)):
+                    break
+                path_pos = path[path_count]
+                path_row, path_col = path_pos
+                path_cell = grid[path_row][path_col]
+                if path_cell != start and path_cell != goal:
+                    path_cell.set_path()
+                if path_count == len(path) - 1:
+                    print(f"Path Length: {len(path) - 1}")
+                path_count += 1
 
         win.fill("gray", pygame.Rect(0, 0, width, width))
     
