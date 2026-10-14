@@ -16,7 +16,7 @@ maze_generate_color = pygame.Color("red")
 display_width = 750
 rows = 100
 fps = 60
-steps_per_frame = 20
+steps_per_frame = 10
 
 if __name__ == "__main__":
     cell.init_colors(empty_color, open_color, closed_color, start_color,

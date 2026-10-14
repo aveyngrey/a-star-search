@@ -59,6 +59,9 @@ class Cell:
     def is_empty(self) -> bool:
         return self.color == EMPTY_COLOR
 
+    def is_path(self) -> bool:
+        return self.color == PATH_COLOR
+
     def reset(self) -> None:
         self.color = EMPTY_COLOR
 

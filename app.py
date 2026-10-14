@@ -136,6 +136,18 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
                     path_cell.set_path()
                 if path_count == len(path) - 1:
                     print(f"Path Length: {len(path) - 1}")
+                    closed_cell_count = 0
+                    empty_cell_count = 0
+                    for row in grid:
+                        for cell in row:
+                            if cell.is_closed() or cell.is_path():
+                                closed_cell_count += 1
+                                empty_cell_count += 1
+                            if cell.is_open() or cell.is_empty():
+                                empty_cell_count += 1
+                        percent_searched = closed_cell_count / empty_cell_count * 100
+                        percent_searched = round(percent_searched, 2)
+                    print(f"{percent_searched}% of empty spaces searched")
                 path_count += 1
 
         win.fill("gray", pygame.Rect(0, 0, width, width))
