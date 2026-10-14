@@ -39,7 +39,10 @@ def distance(point1: tuple[int, int],
 
 def astar() -> None:
     global grid, start, goal, finished, cell_grid
-    global open_set, g_score, came_from, count
+    global open_set, g_score, came_from, count, path
+
+    if path:
+        return
 
     if grid is None:
         raise RuntimeError("grid has not been initialized")
@@ -68,7 +71,7 @@ def astar() -> None:
     # exit function if no path exists
     if count > 0 and not open_set:
         return
-    
+
     rows, cols = len(grid), len(grid[0])
     
     neighbors = ((0,1), (1,0), (0,-1), (-1,0))
@@ -80,7 +83,6 @@ def astar() -> None:
         current_cell.set_closed()
 
     if current_pos == goal:
-        global path
         path = []
         current_path_pos = goal
         while current_path_pos in came_from:

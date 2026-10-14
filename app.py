@@ -117,6 +117,8 @@ def main(win, rows=21, width=693, fps=60, steps_per_frame=1):
         elif started and not done:
             for _ in range(steps_per_frame):
                 astar.astar()
+                if astar.is_finished():
+                    break
             if astar.is_finished():
                 done = True
             elif astar.no_path():
