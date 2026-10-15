@@ -2,7 +2,7 @@
 
 An interactive, step-by-step pathfinding visualizer built completely from scratch using Python and PyGame. This project features a modular multi-class architecture, heap-optimized pathfinding, and procedural maze generation.
 
-[A* Pathfinding Demo](assets/custom_map_demo.gif)
+![A* Pathfinding Demo](assets/custom_map_demo.gif)
 
 ## Project Architecture
 
