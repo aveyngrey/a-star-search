@@ -13,10 +13,10 @@ wall_color = pygame.Color("black")
 path_color = pygame.Color("blue")
 maze_generate_color = pygame.Color("red")
 
-display_width = 750
-rows = 100
+display_width = 700
+rows = 30
 fps = 60
-steps_per_frame = 10
+steps_per_frame = 3
 
 if __name__ == "__main__":
     cell.init_colors(empty_color, open_color, closed_color, start_color,

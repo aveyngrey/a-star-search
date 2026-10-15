@@ -2,10 +2,7 @@
 
 An interactive, step-by-step pathfinding visualizer built completely from scratch using Python and PyGame. This project features a modular multi-class architecture, heap-optimized pathfinding, and procedural maze generation.
 
-<!-- 
-Once you record your GIF, upload it to your repo (e.g., in an 'assets/' folder) and uncomment the line below:
-![A* Pathfinding Demo](assets/demo.gif)
--->
+[A* Pathfinding Demo](assets/custom_map_demo.gif)
 
 ## Project Architecture
 
@@ -21,6 +18,9 @@ The project is organized into clean, decoupled modules to separate game state, v
 
 * **Heap-Optimized A* Search**: Utilizes Python's `heapq` module with a custom `(f_score, h_score, coordinate)` tuple structure to ensure efficient node traversal and intelligent tie-breaking.
 * **Procedural Maze Generation**: Automatically generates intricate mazes using the recursive backtracker algorithm at the press of a key to test pathfinding efficiency under heavy obstacles.
+
+![Maze Generation Demo](assets/maze_demo.gif)
+
 * **Interactive Controls**: Click and drag to draw walls or dynamically reposition the start and goal nodes.
 * **Frame-by-Frame Execution**: Designed with an iterative state machine model, allowing the algorithm to animate step-by-step rather than freezing the screen.
 
